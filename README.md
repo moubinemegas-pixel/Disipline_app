@@ -4,3 +4,6 @@ compile with expo (first go in the file directory afer unzipping and enter the f
 3. set EAS_NO_VCS=1
 4. echo node_modules> .easignore
 5. npx eas-cli build -p android --profile preview
+
+
+NB : You can get the compiled apk from this link : https://drive.google.com/file/d/1FDUhe3-l1DIK9w6OmzCc-va7uoJUG7PU/view
