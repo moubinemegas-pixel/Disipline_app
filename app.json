@@ -2,7 +2,7 @@
   "expo": {
     "name": "Discipline",
     "slug": "discipline",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
     "userInterfaceStyle": "dark",
     "scheme": "discipline",
@@ -14,12 +14,14 @@
         "FOREGROUND_SERVICE",
         "FOREGROUND_SERVICE_DATA_SYNC",
         "WAKE_LOCK",
-        "RECEIVE_BOOT_COMPLETED"
+        "RECEIVE_BOOT_COMPLETED",
+        "USE_EXACT_ALARM"
       ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0a0f24"
-      }
+      },
+      "versionCode": 2
     },
     "plugins": [
       [
@@ -28,9 +30,16 @@
           "icon": "./assets/notification-icon.png",
           "color": "#14c0e8"
         }
-      ]
+      ],
+      "./plugins/withBgService.js"
     ],
     "icon": "./assets/icon.png",
-    "newArchEnabled": false
+    "newArchEnabled": false,
+    "extra": {
+      "eas": {
+        "projectId": "30ef5639-7365-4ef1-80ac-40db124dd9b7"
+      }
+    },
+    "owner": "moub2006"
   }
 }

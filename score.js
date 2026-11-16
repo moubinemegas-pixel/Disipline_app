@@ -21,17 +21,19 @@ export function weekStats(tasks,refDate,nowMs=refDate.getTime()){
   const curAvg=mean(cur),prevAvg=mean(prev);
   return {cur,prev,curAvg,prevAvg,delta:curAvg!==null&&prevAvg!==null?curAvg-prevAvg:null};
 }
-export function trendOf(delta){
-  if(delta===null)return {color:'#14c0e8',text:'Pas encore de comparaison avec la semaine passée'};
-  if(delta>0)return {color:'#2ecc71',text:`Croissance de ${delta} % par rapport à la semaine passée`};
-  if(delta<0)return {color:'#ff4d4d',text:`Baisse de ${-delta} % par rapport à la semaine passée`};
-  return {color:'#14c0e8',text:'Stable par rapport à la semaine passée'};
+export function trendOf(delta,lang='fr'){
+  const en=lang==='en';
+  if(delta===null)return {color:'#14c0e8',text:en?'Not enough data to compare with last week':'Pas encore de comparaison avec la semaine passée'};
+  if(delta>0)return {color:'#2ecc71',text:en?`Up ${delta} % vs last week`:`Croissance de ${delta} % par rapport à la semaine passée`};
+  if(delta<0)return {color:'#ff4d4d',text:en?`Down ${-delta} % vs last week`:`Baisse de ${-delta} % par rapport à la semaine passée`};
+  return {color:'#14c0e8',text:en?'Stable vs last week':'Stable par rapport à la semaine passée'};
 }
 // Message de la notification de minuit (yDate = le jour qui vient de finir).
-export function midnightMessage(tasks,yDate,nowMs){
+export function midnightMessage(tasks,yDate,nowMs,lang='fr'){
+  const en=lang==='en';
   const w=weekStats(tasks,yDate,nowMs),i=(yDate.getDay()+6)%7,y=w.cur[i];
-  if(y===null)return 'Aucune tâche hier. '+(w.curAvg!==null?`Semaine : ${w.curAvg} %.`:'');
+  if(y===null)return (en?'No tasks yesterday. ':'Aucune tâche hier. ')+(w.curAvg!==null?(en?`Week: ${w.curAvg} %.`:`Semaine : ${w.curAvg} %.`):'');
   const p=dayScore(tasks,fmt(addDays(yDate,-1)),nowMs);
-  const d=p===null?'':` (${y===p?'= comme la veille':(y>p?'↑ ':'↓ ')+Math.abs(y-p)+' pts vs la veille'})`;
-  return `Hier : ${y} %${d}. Semaine : ${w.curAvg} %. ${trendOf(w.delta).text}.`;
+  const d=p===null?'':(en?` (${y===p?'same as the day before':(y>p?'↑ ':'↓ ')+Math.abs(y-p)+' pts vs the day before'})`:` (${y===p?'= comme la veille':(y>p?'↑ ':'↓ ')+Math.abs(y-p)+' pts vs la veille'})`);
+  return en?`Yesterday: ${y} %${d}. Week: ${w.curAvg} %. ${trendOf(w.delta,lang).text}.`:`Hier : ${y} %${d}. Semaine : ${w.curAvg} %. ${trendOf(w.delta,lang).text}.`;
 }
